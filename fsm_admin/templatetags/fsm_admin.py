@@ -26,16 +26,18 @@ if 'wpadmin' in settings.INSTALLED_APPS:
 
 
 @register.inclusion_tag(FSM_SUBMIT_BUTTON_TEMPLATE)
-def fsm_submit_button(transition):
+def fsm_submit_button(transition, class_name=None):
     """
     Render a submit button that requests an fsm state transition for a
     single state.
     """
     fsm_field_name, button_value, transition_name = transition
+
     return {
         'button_value': button_value,
         'fsm_field_name': fsm_field_name,
         'transition_name': transition_name,
+        "class_name": class_name,
     }
 
 

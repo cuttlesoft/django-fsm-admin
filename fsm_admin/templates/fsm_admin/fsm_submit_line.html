@@ -1,17 +1,27 @@
 {% load i18n admin_urls fsm_admin %}
-<div class="submit-row">
-{% if show_save %}<input type="submit" value="{% trans 'Save' %}" class="default" name="_save" />{% endif %}
-{% if show_delete_link %}
-    {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
-    <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}" class="deletelink">{% trans "Delete" %}</a></p>
-{% endif %}
+<div class="card card-primary card-outline">
+    <div class="card-header">
+        <h3 class="card-title"><i class="fas fa-edit"></i> Actions </h3>
+    </div>
+    <div class="card-body">
+        {% if show_save %}<div class="form-group"><input type="submit" value="{% trans 'Save' %}" class="btn btn-outline-success form-control" name="_save" /></div>{% endif %}
+        {% if show_delete_link %}
+            {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+            <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}" class="deletelink btn btn-outline-danger form-control">{% trans "Delete" %}</a></p>
+        {% endif %}
 
-{% if show_save_as_new %}<input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew" />{%endif%}
-{% if show_save_and_add_another %}<input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" />{% endif %}
-{% if show_save_and_continue %}<input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue" />{% endif %}
- 
-{% for transition in transitions %}
-{% fsm_submit_button transition %}
-{% endfor %}
-
+        {% if show_save_as_new %}<div class="form-group"><input type="submit" value="{% trans 'Save as new' %}" name="_saveasnew" class="btn btn-outline-info form-control" /></div>{%endif%}
+        {% if show_save_and_add_another %}<div class="form-group"><input type="submit" value="{% trans 'Save and add another' %}" name="_addanother" class="btn btn-outline-info form-control" /></div>{% endif %}
+        {% if show_save_and_continue %}<div class="form-group"><input type="submit" value="{% trans 'Save and continue editing' %}" name="_continue" class="btn btn-outline-info form-control" /></div>{% endif %}
+        
+        {% for transition in transitions %}
+            {% if transition.2 == "cancel" %}
+                <div class="form-group">{% fsm_submit_button transition "cancel btn btn-outline-warning form-control" %}</div>
+            {% elif transition.2 == "approve" %}
+                <div class="form-group">{% fsm_submit_button transition "cancel btn btn-outline-success form-control" %}</div>
+            {% else %}
+                <div class="form-group">{% fsm_submit_button transition " btn btn-outline-info form-control" %}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
